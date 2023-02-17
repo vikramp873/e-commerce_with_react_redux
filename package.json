@@ -1,7 +1,7 @@
 {
   "name": "catalyst_media_react",
   "version": "0.1.0",
-  "homepage": "https://vikramp873.github.io/ecommerce_with_react_redux",
+  "homepage": "https://vikramp873.github.io/ecomm",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.5",
