@@ -24,7 +24,7 @@ export default function AllProducts({ materialData, material }) {
       loadProduct();
       setTimeout(() => {
          setShowSpin(false)
-      }, 1500)
+      }, 2000)
    }, []);
 
    const dispatch = useDispatch()

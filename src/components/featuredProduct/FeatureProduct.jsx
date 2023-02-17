@@ -26,7 +26,7 @@ function FeatureProduct() {
 
       setTimeout(() => {
          setShowSpin(false)
-      }, 1500)
+      }, 2000)
    }, []);
 
    async function featuredProducts() {
