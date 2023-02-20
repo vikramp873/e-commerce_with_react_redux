@@ -10,31 +10,62 @@ import {
 } from "@mui/material";
 import Spinner from "../spinners/Spinner";
 import { newData } from "../context/ContextProvider";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "../../services/api";
 import { ADD } from '../../redux/actions/actions'
 
 
-export default function AllProducts({ materialData, material }) {
+
+export default function AllProducts({ materialDataProp }) {
    const [productData, setProductData] = useState();
    const [showspin, setShowSpin] = useState(true);
+   const [materialData, setMaterialData] = useState([]);
 
    const { setFeature } = useContext(newData);
    useEffect(() => {
       loadProduct();
+
       setTimeout(() => {
          setShowSpin(false)
       }, 2000)
    }, []);
 
-   const dispatch = useDispatch()
+   const dispatch = useDispatch();
 
-   async function loadProduct() {
+
+
+   async function loadProduct(getData) {
       let data = await getAllProducts();
       setProductData(data.data.products);
 
+      // const getData = useSelector((state) => state.cartreducer.materialId);
+
+      // setProductData(getData)
+
+
+      // setProductData(getData);
+
    }
    setFeature(productData);
+
+
+   // if (getData !== "") {
+
+
+   //    let object = productData.filter((obj) => obj.materialId === parseInt(getData));
+   //    setProductData(object);
+   // }
+   // else {
+   //    loadProduct();
+   // }
+
+
+
+
+
+   // let object = productData.filter((obj) => obj.materialId === parseInt(getData));
+   // alert(JSON.stringify(object));
+
 
    const send = (e) => {
       dispatch(ADD(e))
@@ -44,15 +75,16 @@ export default function AllProducts({ materialData, material }) {
 
 
 
-
+   console.log(materialDataProp)
    return (
       <>
          {
             showspin ? <Spinner /> :
                <Grid container spacing={12}>
                   <Grid item xs={12}>
+                     {/* <Material /> */}
                      <Grid container justifyContent="center" spacing={12}>
-                        {productData && productData.length ? (
+                        {!materialDataProp.length ? productData && productData.length ? (
                            productData.map((data, index) => {
                               return (
 
@@ -70,7 +102,7 @@ export default function AllProducts({ materialData, material }) {
                                              {data.name}
                                           </Typography>
                                           <Typography variant="body2" color="text.secondary">
-                                             {data.materialId}
+                                             {data.materialId === 2 ? 'Cotton' : data.materialId === 3 ? 'Leather' : data.materialId === 4 ? 'Lycra' : data.materialId === 5 ? 'Plastic' : data.materialId === 6 ? 'Polyester' : null}
                                           </Typography>
                                        </CardContent>
                                        <CardActions>
@@ -86,7 +118,39 @@ export default function AllProducts({ materialData, material }) {
                            })
                         ) : (
                            <h1>No data</h1>
-                        )}
+
+                        ) :
+                           materialDataProp.map((data, index) => {
+                              return (
+
+
+                                 <Grid key={index} item>
+                                    <Card>
+                                       <CardMedia
+                                          sx={{ height: 330, width: 300 }}
+                                          image={data.image}
+                                          title={data.name}
+                                          alt='img'
+                                       />
+                                       <CardContent>
+                                          <Typography gutterBottom variant="h5" component="div">
+                                             {data.name}
+                                          </Typography>
+                                          <Typography variant="body2" color="text.secondary">
+                                             {data.materialId === 2 ? 'Cotton' : data.materialId === 3 ? 'Leather' : data.materialId === 4 ? 'Lycra' : data.materialId === 5 ? 'Plastic' : data.materialId === 6 ? 'Polyester' : null}
+                                          </Typography>
+                                       </CardContent>
+                                       <CardActions>
+                                          <Button size="small">$ {data.price}</Button>
+                                          <Button size="small">{data.colorid}</Button>
+                                          <Button variant="contained" onClick={() => send(data)} >Add to Cart</Button>
+                                       </CardActions>
+                                    </Card>
+
+                                 </Grid>
+
+                              );
+                           })}
                      </Grid>
                   </Grid>
                </Grid>

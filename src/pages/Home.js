@@ -14,8 +14,11 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
+import Button from '@mui/material/Button';
 import FormLabel from '@mui/material/FormLabel';
 import { newData } from '../components/context/ContextProvider';
+import { useDispatch } from 'react-redux';
+import { ID } from '../redux/actions/actions';
 import './Home.css';
 
 
@@ -66,11 +69,18 @@ function a11yProps(index) {
 export default function Home() {
    const [value, setValue] = React.useState(0);
    const [material, setMaterial] = React.useState([]);
+   const [materialId, setmaterialId] = React.useState('');
+   const [materialData, setmaterialData] = React.useState([])
 
 
 
 
    const { feature } = useContext(newData);
+   const dispatch = useDispatch();
+   const id = (e) => {
+
+   }
+
 
 
    React.useEffect(() => {
@@ -84,21 +94,24 @@ export default function Home() {
       setMaterial(data.data.material);
    }
 
-   const getMaterialsData = async (dataTwo, materialId) => {
 
 
+   const submitMaterialData = (e) => {
 
-      let object = feature.filter((obj) => obj.materialId === parseInt(materialId));
+      if (e === 'all') {
+         setmaterialData([])
+      }
+      else {
 
-      alert(JSON.stringify(object));
-
-
-
-
-
-
-
+         let object = feature.filter((obj) => obj.materialId === parseInt(materialId));
+         dispatch(ID(object))
+         setmaterialData(object)
+      }
    }
+
+   // const clearMaterialData = () => {
+   //    setmaterialData([])
+   // }
 
 
 
@@ -135,13 +148,20 @@ export default function Home() {
                                           <div key={index}>
 
 
-                                             <FormControlLabel value={data.id} control={<Radio />} label={data.name} onChange={(e) => { getMaterialsData(e.target.value, data.id) }} />
+                                             <FormControlLabel value={data.id} control={<Radio />} label={data.name} onChange={(e) => setmaterialId(data.id)} />
 
                                           </div>
                                        )
                                     })
 
                                  }
+
+                                 <FormControlLabel value={'all'} control={<Radio />} label={'all'} onChange={(e) => setmaterialId(e.target.value)} />
+
+                                 <Button variant="contained" onClick={submitMaterialData}>Apply</Button>
+                                 <br />
+                                 <br />
+                                 {/* <Button variant="contained" onClick={clearMaterialData}>Clear</Button> */}
 
 
                               </RadioGroup>
@@ -157,10 +177,10 @@ export default function Home() {
                </Grid>
                <Grid item xs={10}>
                   <Item><TabPanel value={value} index={0}>
-                     <AllProducts />
+                     <AllProducts materialDataProp={materialData} />
                   </TabPanel>
                      <TabPanel value={value} index={1}>
-                        <FeatureProduct />
+                        <FeatureProduct materialDataProp={materialData} />
 
                      </TabPanel>
 

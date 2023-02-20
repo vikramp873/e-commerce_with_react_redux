@@ -1,5 +1,6 @@
 const INIT_STATE = {
-   carts: []
+   carts: [],
+   materialId: []
 }
 
 
@@ -9,6 +10,21 @@ export const cartreducer = (state = INIT_STATE, action) => {
          return {
             ...state,
             carts: [...state.carts, action.payload]
+         }
+
+      case "ADD_MATERIAL_ID":
+         return {
+            ...state,
+            materialId: action.payload,
+            // console.log(materialId)
+         }
+
+      case "DELETE_MATERIAL_ID":
+         const data = state.carts.filter((el) => el.id !== action.payload.id);
+
+         return {
+            ...state,
+            carts: data
          }
 
       default:
