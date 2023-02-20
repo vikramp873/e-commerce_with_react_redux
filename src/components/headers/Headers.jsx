@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '@mui/material/Button';
+import '../../App.css';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Table from '@mui/material/Table';
@@ -156,7 +156,7 @@ function Headers() {
                                     )
                                  })
                                  :
-                                 null
+                                 <p style={{ 'padding': '0 15px' }}>Your cart is empty!</p>
 
                               }
 
